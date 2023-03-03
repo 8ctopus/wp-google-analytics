@@ -100,7 +100,7 @@ msgstr ""
 
 #: wp-google-analytics.php:199
 msgid ""
-"Paste your Google Analytics tracking ID (e.g. \"UA-XXXXXX-X\") into the "
+"Paste your Google Analytics tracking ID (e.g. \"G-XXXXXXXXXX\") into the "
 "field."
 msgstr ""
 

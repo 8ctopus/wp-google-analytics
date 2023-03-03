@@ -198,7 +198,7 @@ class wpGoogleAnalytics {
         echo '</div>';
 
         echo '<input name="wga[code]" id="wga-code" type="text" value="' . esc_attr( $this->_get_options( 'code' ) ) . '" />';
-        echo '<p class="description">' . __( 'Paste your Google Analytics tracking ID (e.g. "UA-XXXXXX-X") into the field.', 'wp-google-analytics' ) . '</p>';
+        echo '<p class="description">' . __( 'Paste your Google Analytics tracking ID (e.g. "G-XXXXXXXXXX") into the field.', 'wp-google-analytics' ) . '</p>';
     }
 
     /**
@@ -279,7 +279,7 @@ class wpGoogleAnalytics {
         $out = [];
 
         // The actual tracking ID
-        if ( preg_match( '#UA-[\d-]+#', $in['code'], $matches ) ) {
+        if ( preg_match( '/^G-[A-Z0-9]{10}$/', $in['code'], $matches ) ) {
             $out['code'] = $matches[0];
         } else {
             $out['code'] = '';
