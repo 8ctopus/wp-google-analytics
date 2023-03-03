@@ -14,13 +14,13 @@ Features:
 * Option to log outgoing links as events
 * Option to log 404 errors as events
 * Use custom variables in Google Analytics to track additional data on pageviews including:
-	* Author
-	* Categories
-	* Tags
-	* Context (such as home, category, post, author, etc)
-	* Date
-	* Logged in
-	* Anything - Use the built-in filter to add your own!
+    * Author
+    * Categories
+    * Tags
+    * Context (such as home, category, post, author, etc)
+    * Date
+    * Logged in
+    * Anything - Use the built-in filter to add your own!
 * Allows you to ignore any user roles (administrators, editors, authors, etc)
 
 Brought to you by <a href="http://aarondcampbell.com/" title="WordPress Plugins">Aaron D. Campbell</a>

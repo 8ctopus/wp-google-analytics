@@ -326,16 +326,16 @@ class wpGoogleAnalytics {
      */
     public function settings_view() {
         ?>
-		<div class="wrap">
-			<h2><?php _e( 'Google Analytics Options', 'wp-google-analytics' ); ?></h2>
-			<form action="options.php" method="post" id="wp_google_analytics">
-				<?php
+        <div class="wrap">
+            <h2><?php _e( 'Google Analytics Options', 'wp-google-analytics' ); ?></h2>
+            <form action="options.php" method="post" id="wp_google_analytics">
+                <?php
                             settings_fields( 'wga' );
         do_settings_sections( 'wga' );
         submit_button( __( 'Update Options', 'wp-google-analytics' ) );
         ?>
-			</form>
-		</div>
+            </form>
+        </div>
 <?php
     }
 
@@ -495,14 +495,14 @@ class wpGoogleAnalytics {
         }
 
         $async_code = "<script type='text/javascript'>
-	var _gaq = _gaq || [];
-	%custom_vars%
+    var _gaq = _gaq || [];
+    %custom_vars%
 
-	(function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	})();
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 </script>";
         $custom_vars_string = implode( "\r\n", $custom_vars );
         $async_code         = str_replace( '%custom_vars%', $custom_vars_string, $async_code );
