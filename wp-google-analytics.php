@@ -389,7 +389,7 @@ class wpGoogleAnalytics {
      * @param bool[optional] $output - defaults to true, false returns but does NOT echo the code
      */
     public function insert_code( $output = true ) {
-        //If $output is not a boolean false, set it to true (default)
+        // If $output is not a boolean false, set it to true (default)
         $output = ( $output !== false );
 
         $tracking_id = $this->_get_options( 'code' );
@@ -398,9 +398,10 @@ class wpGoogleAnalytics {
             return $this->_output_or_return( '<!-- Your Google Analytics Plugin is missing the tracking ID -->', $output );
         }
 
-        //get our plugin options
+        // get our plugin options
         $wga = $this->_get_options();
-        //If the user's role has wga_no_track set to true, return without inserting code
+
+        // If the user's role has wga_no_track set to true, return without inserting code
         if ( is_user_logged_in() ) {
             $current_user = wp_get_current_user();
             $role         = array_shift( $current_user->roles );
@@ -410,11 +411,12 @@ class wpGoogleAnalytics {
             }
         }
 
-        //If $admin is true (we're in the admin_area), and we've been told to ignore_admin_area, return without inserting code
+        // If $admin is true (we're in the admin_area), and we've been told to ignore_admin_area, return without inserting code
         if ( is_admin() && ( !isset( $wga['ignore_admin_area'] ) || $wga['ignore_admin_area'] != 'false' ) ) {
             return $this->_output_or_return( '<!-- Your Google Analytics Plugin is set to ignore Admin area -->', $output );
         }
 
+        /*
         $custom_vars = [
             "_gaq.push(['_setAccount', '{$tracking_id}']);",
         ];
@@ -493,22 +495,24 @@ class wpGoogleAnalytics {
         } else {
             $custom_vars[] = "_gaq.push(['_trackPageview']);";
         }
+        */
 
         $async_code = <<<SCRIPT
-            <script type='text/javascript'>
-                var _gaq = _gaq || [];
-                %custom_vars%
+            <!-- Google tag (gtag.js) -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id={$tracking_id}"></script>
+            <script>
+              window.dataLayer = window.dataLayer || [];
+              function gtag() {
+                dataLayer.push(arguments);
+              }
 
-                (function() {
-                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-                })();
+              gtag('js', new Date());
+              gtag('config', '{$tracking_id}');
             </script>
         SCRIPT;
 
-        $custom_vars_string = implode( "\r\n", $custom_vars );
-        $async_code         = str_replace( '%custom_vars%', $custom_vars_string, $async_code );
+        //$custom_vars_string = implode( "\r\n", $custom_vars );
+        //$async_code         = str_replace( '%custom_vars%', $custom_vars_string, $async_code );
 
         return $this->_output_or_return( $async_code, $output );
     }
