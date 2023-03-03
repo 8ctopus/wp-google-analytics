@@ -530,7 +530,7 @@ class wpGoogleAnalytics {
         if ( isset( $option ) ) {
             if ( isset( $o[$option] ) ) {
                 if ( 'code' == $option ) {
-                    if ( preg_match( '#UA-[\d-]+#', $o[$option], $matches ) ) {
+                    if ( preg_match( '/^G-[A-Z0-9]{10}$/', $o[$option], $matches ) ) {
                         return $matches[0];
                     } else {
                         return '';
