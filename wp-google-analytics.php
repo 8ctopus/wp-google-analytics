@@ -295,7 +295,7 @@ class wpGoogleAnalytics {
             ];
         global $wp_roles;
 
-        foreach ( $wp_roles->roles as $role => $role_info ) {
+        foreach ( array_keys($wp_roles->roles) as $role ) {
             $checkbox_items[] = 'ignore_role_' . $role;
         }
 
