@@ -387,29 +387,14 @@ class wpGoogleAnalytics {
     */
 
     /**
-     * Maybe output or return, depending on the context
-     */
-    private function _output_or_return( $val, $maybe ) {
-        if ( $maybe ) {
-            echo $val . "\r\n";
-        } else {
-            return $val;
-        }
-    }
-
-    /**
      * This injects the Google Analytics code into the footer of the page.
      *
-     * @param bool[optional] $output - defaults to true, false returns but does NOT echo the code
      */
-    public function insert_code( $output = true ) {
-        // If $output is not a boolean false, set it to true (default)
-        $output = ( $output !== false );
-
+    public function insert_code() {
         $tracking_id = $this->_get_options( 'code' );
 
         if ( empty( $tracking_id ) ) {
-            return $this->_output_or_return( '<!-- Your Google Analytics Plugin is missing the tracking ID -->', $output );
+            echo '<!-- Your Google Analytics Plugin is missing the tracking ID -->' . PHP_EOL;
         }
 
         // get our plugin options
@@ -421,13 +406,13 @@ class wpGoogleAnalytics {
             $role         = array_shift( $current_user->roles );
 
             if ( 'true' == $this->_get_options( 'ignore_role_' . $role ) ) {
-                return $this->_output_or_return( '<!-- Google Analytics Plugin is set to ignore your user role -->', $output );
+                echo '<!-- Google Analytics Plugin is set to ignore your user role -->' . PHP_EOL;
             }
         }
 
         // If $admin is true (we're in the admin_area), and we've been told to ignore_admin_area, return without inserting code
         if ( is_admin() && ( !isset( $wga['ignore_admin_area'] ) || $wga['ignore_admin_area'] != 'false' ) ) {
-            return $this->_output_or_return( '<!-- Your Google Analytics Plugin is set to ignore Admin area -->', $output );
+            echo '<!-- Your Google Analytics Plugin is set to ignore Admin area -->' . PHP_EOL;
         }
 
         /*
@@ -528,7 +513,7 @@ class wpGoogleAnalytics {
         //$custom_vars_string = implode( "\r\n", $custom_vars );
         //$async_code         = str_replace( '%custom_vars%', $custom_vars_string, $async_code );
 
-        return $this->_output_or_return( $async_code, $output );
+        echo $async_code . PHP_EOL;
     }
 
     /**
