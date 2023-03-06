@@ -1,6 +1,6 @@
 {
     "name": "8ctopus/wp-google-analytics",
-    "description": "Add Google Analytics 4 tracking to your website.",
+    "description": "Add Google Analytics 4 tracking to your website",
     "type": "wordpress-plugin",
     "homepage": "https://github.com/8ctopus/wp-google-analytics",
     "license": "GPLv2 or later",
