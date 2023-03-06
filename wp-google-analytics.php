@@ -4,14 +4,14 @@
  * Plugin Name: WP Google Analytics
  * Plugin URI: https://github.com/8ctopus/wp-google-analytics
  * Description: Add Google Analytics 4 tracking to your website
- * Version: 1.4.1
+ * Version: 2.0.0
  * Author: 8ctopus and Aaron D. Campbell
  * Author URI: http://github.com/8ctopus
  * License: GPLv2 or later
  * Text Domain: wp-google-analytics
  */
 
-define( 'WGA_VERSION', '1.4.1' );
+define( 'WGA_VERSION', '2.0.0' );
 
 /*  Copyright 2006  Aaron D. Campbell  (email : wp_plugins@xavisys.com)
 
