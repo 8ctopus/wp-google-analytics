@@ -54,7 +54,7 @@ class wpGoogleAnalytics {
         add_action( 'admin_init', [ $this, 'admin_init' ] );
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );
         add_action( 'get_footer', [ $this, 'insert_code' ] );
-        add_action( 'wp_enqueue_scripts', [ $this, 'track_outgoing' ] );
+        //add_action( 'wp_enqueue_scripts', [ $this, 'track_outgoing' ] );
         add_filter( 'plugin_action_links', [ $this, 'add_plugin_page_links' ], 10, 2 );
     }
 
@@ -563,11 +563,13 @@ class wpGoogleAnalytics {
     /**
      * If we track outgoing links, this will enqueue our javascript file
      */
+    /* REM
     public function track_outgoing() {
         if ( 'true' == $this->_get_options( 'log_outgoing' ) && ( !defined( 'XMLRPC_REQUEST' ) || !XMLRPC_REQUEST ) && ( ! is_admin() || 'false' == $this->_get_options( 'ignore_admin_area' ) ) ) {
             wp_enqueue_script( 'wp-google-analytics', plugin_dir_url( __FILE__ ) . 'wp-google-analytics.js', [ 'jquery' ], '0.0.3' );
         }
     }
+    */
 
     /**
      * Callback for %the_category% token
