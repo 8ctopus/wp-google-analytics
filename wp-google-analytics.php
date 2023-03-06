@@ -2,9 +2,9 @@
 /**
  * Plugin Name: WP Google Analytics
  * Plugin URI: https://github.com/8ctopus/wp-google-analytics
- * Description: Add Google Analytics 4 tracking code to your blog
+ * Description: Add Google Analytics 4 tracking to your website
  * Version: 1.4.1
- * Author: 8ctopus
+ * Author: 8ctopus and Aaron D. Campbell
  * Author URI: http://github.com/8ctopus
  * License: GPLv2 or later
  * Text Domain: wp-google-analytics
@@ -173,7 +173,7 @@ class wpGoogleAnalytics {
         add_settings_section( 'wga_general', false, '__return_false', 'wga' );
 
         add_settings_field( 'code', __( 'Google Analytics 4 tracking ID:', 'wp-google-analytics' ), [ $this, 'field_code' ], 'wga', 'wga_general' );
-        add_settings_field( 'additional_items', __( 'Additional items to log:', 'wp-google-analytics' ), [ $this, 'field_additional_items' ], 'wga', 'wga_general' );
+        //add_settings_field( 'additional_items', __( 'Additional items to log:', 'wp-google-analytics' ), [ $this, 'field_additional_items' ], 'wga', 'wga_general' );
         add_settings_field( 'do_not_track', __( 'Visits to ignore:', 'wp-google-analytics' ), [ $this, 'field_do_not_track' ], 'wga', 'wga_general' );
         //add_settings_field( 'custom_vars', __( 'Custom variables:', 'wp-google-analytics' ), [ $this, 'field_custom_variables' ], 'wga', 'wga_general' );
     }
@@ -203,12 +203,13 @@ class wpGoogleAnalytics {
         */
 
         echo '<input name="wga[code]" id="wga-code" type="text" value="' . esc_attr( $this->_get_options( 'code' ) ) . '" />';
-        echo '<p class="description">' . __( 'Paste your Google Analytics tracking ID (e.g. "G-XXXXXXXXXX") into the field.', 'wp-google-analytics' ) . '</p>';
+        echo '<p class="description">' . __( 'Paste your Google Analytics 4 tracking ID (e.g. "G-XXXXXXXXXX") into the field.', 'wp-google-analytics' ) . '</p>';
     }
 
     /**
      * Option to log additional items
      */
+    /*
     public function field_additional_items() {
         $addtl_items = [
                 'log_404s'       => __( 'Log 404 errors as events', 'wp-google-analytics' ),
@@ -223,6 +224,7 @@ class wpGoogleAnalytics {
             echo '</label><br />';
         }
     }
+    */
 
     /**
      * Define custom variables to be included in your tracking code
@@ -300,6 +302,7 @@ class wpGoogleAnalytics {
                 // Things to ignore
                 'ignore_admin_area',
             ];
+
         global $wp_roles;
 
         foreach ( array_keys($wp_roles->roles) as $role ) {
@@ -337,9 +340,11 @@ class wpGoogleAnalytics {
             <h2><?php _e( 'Google Analytics Options', 'wp-google-analytics' ); ?></h2>
             <form action="options.php" method="post" id="wp_google_analytics">
                 <?php
-                            settings_fields( 'wga' );
+
+        settings_fields( 'wga' );
         do_settings_sections( 'wga' );
         submit_button( __( 'Update Options', 'wp-google-analytics' ) );
+
         ?>
             </form>
         </div>
