@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: WP Google Analytics
- * Plugin URI: http://bluedogwebservices.com/wordpress-plugin/wp-google-analytics/
- * Description: Lets you use <a href="http://analytics.google.com">Google Analytics</a> to track your WordPress site statistics
+ * Plugin URI: https://github.com/8ctopus/wp-google-analytics
+ * Description: Add Google Analytics 4 tracking code to your blog
  * Version: 1.4.1
- * Author: Aaron D. Campbell
- * Author URI: http://ran.ge/
+ * Author: 8ctopus
+ * Author URI: http://github.com/8ctopus
  * License: GPLv2 or later
  * Text Domain: wp-google-analytics
  */
