@@ -265,8 +265,9 @@ class wpGoogleAnalytics {
 
     public function field_do_not_track() {
         $do_not_track = [
-                'ignore_admin_area'       => __( 'Do not log anything in the admin area', 'wp-google-analytics' ),
-            ];
+            'ignore_admin_area' => __( 'Do not log anything in the admin area', 'wp-google-analytics' ),
+        ];
+
         global $wp_roles;
 
         foreach ( $wp_roles->roles as $role => $role_info ) {
@@ -335,17 +336,17 @@ class wpGoogleAnalytics {
      * This is used to display the options page for this plugin
      */
     public function settings_view() {
-        ?>
+?>
         <div class="wrap">
             <h2><?php _e( 'Google Analytics Options', 'wp-google-analytics' ); ?></h2>
             <form action="options.php" method="post" id="wp_google_analytics">
-                <?php
+<?php
 
-        settings_fields( 'wga' );
-        do_settings_sections( 'wga' );
-        submit_button( __( 'Update Options', 'wp-google-analytics' ) );
+settings_fields( 'wga' );
+do_settings_sections( 'wga' );
+submit_button( __( 'Update Options', 'wp-google-analytics' ) );
 
-        ?>
+?>
             </form>
         </div>
 <?php
@@ -496,7 +497,7 @@ class wpGoogleAnalytics {
         }
         */
 
-        $async_code = <<<SCRIPT
+        echo <<<SCRIPT
             <!-- Google tag (gtag.js) -->
             <script async src="https://www.googletagmanager.com/gtag/js?id={$tracking_id}"></script>
             <script>
@@ -512,8 +513,6 @@ class wpGoogleAnalytics {
 
         //$custom_vars_string = implode( "\r\n", $custom_vars );
         //$async_code         = str_replace( '%custom_vars%', $custom_vars_string, $async_code );
-
-        echo $async_code . PHP_EOL;
     }
 
     /**
