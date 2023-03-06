@@ -42,7 +42,7 @@ class wpGoogleAnalytics {
 
     public static $page_slug = 'wp-google-analytics';
 
-    public $tokens = [];
+    // public $tokens = [];
 
     /**
      * This is our constructor, which is private to force the use of get_instance()
@@ -72,6 +72,7 @@ class wpGoogleAnalytics {
     public function init() {
         load_plugin_textdomain( 'wp-google-analytics', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
+        /* REM
         $this->tokens = [
                 [
                         'token'            => '%the_author%',
@@ -153,6 +154,7 @@ class wpGoogleAnalytics {
             ];
 
         $this->tokens = apply_filters( 'wga_tokens', $this->tokens );
+        */
     }
 
     /**
@@ -169,16 +171,18 @@ class wpGoogleAnalytics {
         register_setting( 'wga', 'wga', [ $this, 'sanitize_general_options' ] );
 
         add_settings_section( 'wga_general', false, '__return_false', 'wga' );
-        add_settings_field( 'code', __( 'Google Analytics tracking ID:', 'wp-google-analytics' ), [ $this, 'field_code' ], 'wga', 'wga_general' );
+
+        add_settings_field( 'code', __( 'Google Analytics 4 tracking ID:', 'wp-google-analytics' ), [ $this, 'field_code' ], 'wga', 'wga_general' );
         add_settings_field( 'additional_items', __( 'Additional items to log:', 'wp-google-analytics' ), [ $this, 'field_additional_items' ], 'wga', 'wga_general' );
         add_settings_field( 'do_not_track', __( 'Visits to ignore:', 'wp-google-analytics' ), [ $this, 'field_do_not_track' ], 'wga', 'wga_general' );
-        add_settings_field( 'custom_vars', __( 'Custom variables:', 'wp-google-analytics' ), [ $this, 'field_custom_variables' ], 'wga', 'wga_general' );
+        //add_settings_field( 'custom_vars', __( 'Custom variables:', 'wp-google-analytics' ), [ $this, 'field_custom_variables' ], 'wga', 'wga_general' );
     }
 
     /**
      * Where the user adds their Google Analytics code
      */
     public function field_code() {
+        /* REM
         // Display the tokens in the right column of the page
         echo '<div id="tokens-description" style="position:absolute;margin-left:600px;margin-right:50px;">';
         echo '<span>' . __( 'Use tokens in your custom variables to make your fields dynamic based on context. Here are some of the tokens you can use:' ) . '</span>';
@@ -196,6 +200,7 @@ class wpGoogleAnalytics {
         echo '</tbody>';
         echo '</table>';
         echo '</div>';
+        */
 
         echo '<input name="wga[code]" id="wga-code" type="text" value="' . esc_attr( $this->_get_options( 'code' ) ) . '" />';
         echo '<p class="description">' . __( 'Paste your Google Analytics tracking ID (e.g. "G-XXXXXXXXXX") into the field.', 'wp-google-analytics' ) . '</p>';
@@ -222,6 +227,7 @@ class wpGoogleAnalytics {
     /**
      * Define custom variables to be included in your tracking code
      */
+    /* REM
     public function field_custom_variables() {
         $custom_vars = $this->_get_options( 'custom_vars' );
 
@@ -253,6 +259,7 @@ class wpGoogleAnalytics {
             echo '</label><br />';
         }
     }
+    */
 
     public function field_do_not_track() {
         $do_not_track = [
