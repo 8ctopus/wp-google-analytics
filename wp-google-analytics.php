@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: WP Google Analytics
  * Plugin URI: https://github.com/8ctopus/wp-google-analytics
@@ -9,6 +10,7 @@
  * License: GPLv2 or later
  * Text Domain: wp-google-analytics
  */
+
 define( 'WGA_VERSION', '1.4.1' );
 
 /*  Copyright 2006  Aaron D. Campbell  (email : wp_plugins@xavisys.com)
@@ -42,19 +44,14 @@ class wpGoogleAnalytics {
 
     public static $page_slug = 'wp-google-analytics';
 
-    //public $tokens = [];
-
     /**
      * This is our constructor, which is private to force the use of get_instance()
-     *
-     * @return void
      */
     private function __construct() {
         add_filter( 'init', [ $this, 'init' ] );
         add_action( 'admin_init', [ $this, 'admin_init' ] );
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );
         add_action( 'get_footer', [ $this, 'insert_code' ] );
-        //add_action( 'wp_enqueue_scripts', [ $this, 'track_outgoing' ] );
         add_filter( 'plugin_action_links', [ $this, 'add_plugin_page_links' ], 10, 2 );
     }
 
@@ -72,89 +69,6 @@ class wpGoogleAnalytics {
     public function init() {
         load_plugin_textdomain( 'wp-google-analytics', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
-        /* REM
-        $this->tokens = [
-                [
-                        'token'            => '%the_author%',
-                        'callback'         => 'get_the_author',
-                        'callback_returns' => 'string',
-                        'description'      => __( 'Post author for current view', 'wp-google-analytics' ),
-                        'retval'           => __( "Post author's display name", 'wp-google-analytics' ),
-                        'ignore_when'      => [
-                                'is_home',
-                                'is_front_page',
-                                'is_post_type_archive',
-                                'is_page',
-                                'is_date',
-                                'is_category',
-                                'is_tag',
-                            ],
-                    ],
-                [
-                        'token'            => '%the_category%',
-                        'callback'         => [ $this, 'token_the_category' ],
-                        'callback_returns' => 'string',
-                        'description'      => __( 'Categories assigned to a post', 'wp-google-analytics' ),
-                        'retval'           => __( 'Category names in a commma-separated list', 'wp-google-analytics' ),
-                        'ignore_when'      => [
-                                'is_home',
-                                'is_front_page',
-                                'is_page',
-                                'is_post_type_archive',
-                                'is_author',
-                                'is_tag',
-                            ],
-                    ],
-                [
-                        'token'            => '%context%',
-                        'callback'         => [ $this, 'token_context' ],
-                        'callback_returns' => 'string',
-                        'description'      => __( 'Which view the visitor is on', 'wp-google-analytics' ),
-                        'retval'           => __( "Samples: 'home', 'category', 'post', 'author'" ),
-                    ],
-                [
-                        'token'            => '%the_date%',
-                        'callback'         => 'get_the_date',
-                        'callback_returns' => 'string',
-                        'description'      => __( 'Publication date for the current view', 'wp-google-analytics' ),
-                        'retval'           => __( "Format specified by 'Date Format' in Settings -> General", 'wp-google-analytics' ),
-                        'ignore_when'      => [
-                                'is_home',
-                                'is_front_page',
-                                'is_post_type_archive',
-                                'is_page',
-                                'is_author',
-                                'is_category',
-                                'is_tag',
-                            ],
-                    ],
-                [
-                        'token'            => '%the_tags%',
-                        'callback'         => [ $this, 'token_the_tags' ],
-                        'callback_returns' => 'string',
-                        'description'      => __( 'Tags assigned to a post', 'wp-google-analytics' ),
-                        'retval'           => __( 'Tag names in a commma-separated list', 'wp-google-analytics' ),
-                        'ignore_when'      => [
-                                'is_home',
-                                'is_front_page',
-                                'is_page',
-                                'is_post_type_archive',
-                                'is_date',
-                                'is_category',
-                                'is_author',
-                            ],
-                    ],
-                [
-                        'token'            => '%is_user_logged_in%',
-                        'callback'         => 'is_user_logged_in',
-                        'callback_returns' => 'bool',
-                        'description'      => __( 'Whether or not the viewer is logged in', 'wp-google-analytics' ),
-                        'retval'           => __( "'true' or 'false'", 'wp-google-analytics' ),
-                    ],
-            ];
-
-        $this->tokens = apply_filters( 'wga_tokens', $this->tokens );
-        */
     }
 
     /**
@@ -173,95 +87,16 @@ class wpGoogleAnalytics {
         add_settings_section( 'wga_general', false, '__return_false', 'wga' );
 
         add_settings_field( 'code', __( 'Google Analytics 4 tracking ID:', 'wp-google-analytics' ), [ $this, 'field_code' ], 'wga', 'wga_general' );
-        //add_settings_field( 'additional_items', __( 'Additional items to log:', 'wp-google-analytics' ), [ $this, 'field_additional_items' ], 'wga', 'wga_general' );
         add_settings_field( 'do_not_track', __( 'Visits to ignore:', 'wp-google-analytics' ), [ $this, 'field_do_not_track' ], 'wga', 'wga_general' );
-        //add_settings_field( 'custom_vars', __( 'Custom variables:', 'wp-google-analytics' ), [ $this, 'field_custom_variables' ], 'wga', 'wga_general' );
     }
 
     /**
      * Where the user adds their Google Analytics code
      */
     public function field_code() {
-        /* REM
-        // Display the tokens in the right column of the page
-        echo '<div id="tokens-description" style="position:absolute;margin-left:600px;margin-right:50px;">';
-        echo '<span>' . __( 'Use tokens in your custom variables to make your fields dynamic based on context. Here are some of the tokens you can use:' ) . '</span>';
-        echo '<table style="text-align:left;">';
-        echo '<thead><tr><td>' . __( 'Token', 'wp-google-analytics' ) . '</td><td>' . __( 'Description', 'wp-google-analytics' ) . '</td><td>' . __( 'Return value', 'wp-google-analytics' ) . '</td></tr></thead>';
-        echo '<tbody>';
-
-        foreach ( $this->tokens as $token ) {
-            echo '<tr>';
-            echo '<td>' . esc_html( $token['token'] ) . '</td>';
-            echo '<td>' . esc_html( $token['description'] ) . '</td>';
-            echo '<td>' . esc_html( $token['retval'] ) . '</td>';
-            echo '</tr>';
-        }
-        echo '</tbody>';
-        echo '</table>';
-        echo '</div>';
-        */
-
         echo '<input name="wga[code]" id="wga-code" type="text" value="' . esc_attr( $this->_get_options( 'code' ) ) . '" />';
         echo '<p class="description">' . __( 'Paste your Google Analytics 4 tracking ID (e.g. "G-XXXXXXXXXX") into the field.', 'wp-google-analytics' ) . '</p>';
     }
-
-    /**
-     * Option to log additional items
-     */
-    /*
-    public function field_additional_items() {
-        $addtl_items = [
-                'log_404s'       => __( 'Log 404 errors as events', 'wp-google-analytics' ),
-                'log_searches'   => sprintf( __( 'Log searches as /search/{search}?referrer={referrer} (<a href="%s">deprecated</a>)', 'wp-google-analytics' ), 'http://wordpress.org/extend/plugins/wp-google-analytics/faq/' ),
-                'log_outgoing'   => __( 'Log outgoing links as events', 'wp-google-analytics' ),
-            ];
-
-        foreach ( $addtl_items as $id => $label ) {
-            echo '<label for="wga_' . $id . '">';
-            echo '<input id="wga_' . $id . '" type="checkbox" name="wga[' . $id . ']" value="true" ' . checked( 'true', $this->_get_options( $id ), false ) . ' />';
-            echo '&nbsp;&nbsp;' . $label;
-            echo '</label><br />';
-        }
-    }
-    */
-
-    /**
-     * Define custom variables to be included in your tracking code
-     */
-    /* REM
-    public function field_custom_variables() {
-        $custom_vars = $this->_get_options( 'custom_vars' );
-
-        $scope_options = [
-                0 => __( 'Default', 'wp-google-analytics' ),
-                1 => __( 'Visitor', 'wp-google-analytics' ),
-                2 => __( 'Session', 'wp-google-analytics' ),
-                3 => __( 'Page', 'wp-google-analytics' ),
-            ];
-
-        for ( $i = 1; $i <= 5; $i++ ) {
-            $name  = ( isset( $custom_vars[$i]['name'] ) ) ? $custom_vars[$i]['name'] : '';
-            $value = ( isset( $custom_vars[$i]['value'] ) ) ? $custom_vars[$i]['value'] : '';
-            $scope = ( isset( $custom_vars[$i]['scope'] ) ) ? $custom_vars[$i]['scope'] : 0;
-            echo '<label for="wga_custom_var_' . $i . '_name"><strong>' . $i . ')</strong>&nbsp;' . __( 'Name', 'wp-google-analytics' ) . '&nbsp;';
-            echo '<input id="wga_custom_var_' . $i . '" type="text" name="wga[custom_vars][' . $i . '][name]" value="' . esc_attr( $name ) . '" />';
-            echo '</label>&nbsp;&nbsp;';
-            echo '<label for="wga_custom_var_' . $i . '_value">' . __( 'Value', 'wp-google-analytics' ) . '&nbsp;';
-            echo '<input id="wga_custom_var_' . $i . '" type="text" name="wga[custom_vars][' . $i . '][value]" value="' . esc_attr( $value ) . '" />';
-            echo '</label>&nbsp;&nbsp;';
-            echo '<label for="wga_custom_var_' . $i . '_scope">' . __( 'Scope', 'wp-google-analytics' ) . '&nbsp;';
-            echo '<select id="wga_custom_var_' . $i . '_scope" name="wga[custom_vars][' . $i . '][scope]">';
-
-            foreach ( $scope_options as $key => $label ) {
-                echo '<option value="' . $key . '" ' . selected( $scope, $key, false ) . '>';
-                echo $label . '</option>';
-            }
-            echo '</select>';
-            echo '</label><br />';
-        }
-    }
-    */
 
     public function field_do_not_track() {
         $do_not_track = [
@@ -318,17 +153,6 @@ class wpGoogleAnalytics {
             }
         }
 
-        // Custom variables
-        for ( $i = 1; $i <= 5; $i++ ) {
-            foreach ( [ 'name', 'value', 'scope' ] as $key ) {
-                if ( isset( $in['custom_vars'][$i][$key] ) ) {
-                    $out['custom_vars'][$i][$key] = sanitize_text_field( $in['custom_vars'][$i][$key] );
-                } else {
-                    $out['custom_vars'][$i][$key] = '';
-                }
-            }
-        }
-
         return $out;
     }
 
@@ -351,41 +175,6 @@ submit_button( __( 'Update Options', 'wp-google-analytics' ) );
         </div>
 <?php
     }
-
-    /**
-     * Used to generate a tracking URL
-     *
-     * @param array $track - Must have ['data'] and ['code']
-     *
-     * @return string - Tracking URL
-     */
-    /* REM
-    private function _get_url( $track ) {
-        $site_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
-
-        foreach ( $track as $k=>$value ) {
-            if ( strpos( strtolower( $value ), strtolower( $site_url ) ) === 0 ) {
-                $track[$k] = substr( $track[$k], strlen( $site_url ) );
-            }
-
-            if ( $k == 'data' ) {
-                $track[$k] = preg_replace( "/^https?:\/\/|^\/+/i", '', $track[$k] );
-            }
-
-            //This way we don't lose search data.
-            if ( $k == 'data' && $track['code'] == 'search' ) {
-                $track[$k] = urlencode( $track[$k] );
-            } else {
-                $track[$k] = preg_replace( "/[^a-z0-9\.\/\+\?=-]+/i", '_', $track[$k] );
-            }
-
-            $track[$k] = trim( $track[$k], '_' );
-        }
-        $char = ( strpos( $track['data'], '?' ) === false ) ? '?' : '&amp;';
-
-        return str_replace( "'", "\'", "/{$track['code']}/{$track['data']}{$char}referer=" . urlencode( isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '' ) );
-    }
-    */
 
     /**
      * This injects the Google Analytics code into the footer of the page.
@@ -416,87 +205,6 @@ submit_button( __( 'Update Options', 'wp-google-analytics' ) );
             echo '<!-- Your Google Analytics Plugin is set to ignore Admin area -->' . PHP_EOL;
         }
 
-        /*
-        $custom_vars = [
-            "_gaq.push(['_setAccount', '{$tracking_id}']);",
-        ];
-
-        // Add custom variables specified by the user
-        foreach ( $this->_get_options( 'custom_vars', [] ) as $i => $custom_var ) {
-            if ( empty( $custom_var['name'] ) || empty( $custom_var['value'] ) ) {
-                continue;
-            }
-
-            // Check whether a token was used with this custom var, and replace with value if so
-            $all_tokens = wp_list_pluck( $this->tokens, 'token' );
-
-            if ( in_array( $custom_var['value'], $all_tokens ) ) {
-                $token = array_pop( wp_filter_object_list( $this->tokens, [ 'token' => $custom_var['value'] ] ) );
-
-                // Allow tokens to return empty values for specific contexts
-                $ignore = false;
-
-                if ( ! empty( $token['ignore_when'] ) ) {
-                    foreach ( (array) $token['ignore_when'] as $conditional ) {
-                        if ( is_callable( $conditional ) ) {
-                            $ignore = call_user_func( $conditional );
-
-                            if ( $ignore ) {
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                // If we aren't set to ignore this context, possibly execute the callback
-                if ( ! $ignore && ! empty( $token['callback'] ) && is_callable( $token['callback'] ) ) {
-                    $replace = call_user_func( $token['callback'] );
-                } else {
-                    $replace = '';
-                }
-
-                if ( ! empty( $token['callback_returns'] ) && 'bool' == $token['callback_returns'] ) {
-                    $replace = ( $replace ) ? 'true' : 'false';
-                }
-
-                // Replace our token with the value
-                $custom_var['value'] = str_replace( $custom_var['value'], $replace, $custom_var['value'] );
-            }
-
-            $atts = [
-                    "'_setCustomVar'",
-                    intval( $i ),
-                    "'" . esc_js( $custom_var['name'] ) . "'",
-                    "'" . esc_js( $custom_var['value'] ) . "'",
-                ];
-
-            if ( $custom_var['scope'] ) {
-                $atts[] = intval( $custom_var['scope'] );
-            }
-            $custom_vars[] = '_gaq.push([' . implode( ', ', $atts ) . ']);';
-        }
-
-        $track = [];
-
-        if ( is_404() && ( !isset( $wga['log_404s'] ) || $wga['log_404s'] != 'false' ) ) {
-            // This is a 404 and we are supposed to track them
-            $custom_vars[] = "_gaq.push( [ '_trackEvent', '404', document.location.href, document.referrer ] );";
-        } elseif ( is_search() && ( !isset( $wga['log_searches'] ) || $wga['log_searches'] != 'false' ) ) {
-            //Set track for searches, if it's a search, and we are supposed to
-            $track['data'] = $_REQUEST['s'];
-            $track['code'] = 'search';
-        }
-
-        if ( ! empty( $track ) ) {
-            $track['url'] = $this->_get_url( $track );
-            //adjust the code that we output, account for both types of tracking
-            $track['url']  = esc_js( str_replace( '&', '&amp;', $track['url'] ) );
-            $custom_vars[] = "_gaq.push(['_trackPageview','{$track['url']}']);";
-        } else {
-            $custom_vars[] = "_gaq.push(['_trackPageview']);";
-        }
-        */
-
         echo <<<SCRIPT
             <!-- Google tag (gtag.js) -->
             <script async src="https://www.googletagmanager.com/gtag/js?id={$tracking_id}"></script>
@@ -510,9 +218,6 @@ submit_button( __( 'Update Options', 'wp-google-analytics' ) );
               gtag('config', '{$tracking_id}');
             </script>
         SCRIPT;
-
-        //$custom_vars_string = implode( "\r\n", $custom_vars );
-        //$async_code         = str_replace( '%custom_vars%', $custom_vars_string, $async_code );
     }
 
     /**
@@ -557,62 +262,6 @@ submit_button( __( 'Update Options', 'wp-google-analytics' ) );
             return $o;
         }
     }
-
-    /**
-     * If we track outgoing links, this will enqueue our javascript file
-     */
-    /* REM
-    public function track_outgoing() {
-        if ( 'true' == $this->_get_options( 'log_outgoing' ) && ( !defined( 'XMLRPC_REQUEST' ) || !XMLRPC_REQUEST ) && ( ! is_admin() || 'false' == $this->_get_options( 'ignore_admin_area' ) ) ) {
-            wp_enqueue_script( 'wp-google-analytics', plugin_dir_url( __FILE__ ) . 'wp-google-analytics.js', [ 'jquery' ], '0.0.3' );
-        }
-    }
-    */
-
-    /**
-     * Callback for %the_category% token
-     */
-    /* REM
-    public function token_the_category() {
-        return implode( ', ', wp_list_pluck( (array) get_the_category(), 'name' ) );
-    }
-    */
-
-    /**
-     * Callback for %context% token
-     */
-    /* REM
-    public function token_context() {
-        if ( is_admin() ) {
-            return 'admin';
-        } elseif ( is_home() || is_front_page() ) {
-            return 'home';
-        } elseif ( is_tax() || is_tag() || is_category() ) {
-            return get_queried_object()->taxonomy;
-        } elseif ( is_author() ) {
-            return 'author';
-        } elseif ( is_singular() || is_single() || is_page() ) {
-            return get_post_type();
-        } elseif ( is_search() ) {
-            return 'search';
-        } elseif ( is_date() ) {
-            return 'date';
-        } elseif ( is_archive() ) {
-            return 'archive';
-        } elseif ( is_404() ) {
-            return '404';
-        }
-    }
-    */
-
-    /**
-     * Callback for %the_tags% token
-     */
-    /* REM
-    public function token_the_tags() {
-        return implode( ', ', wp_list_pluck( (array) get_the_tags(), 'name' ) );
-    }
-    */
 
     public function add_plugin_page_links( $links, $file ) {
         if ( plugin_basename( __FILE__ ) == $file ) {
