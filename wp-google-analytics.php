@@ -42,7 +42,7 @@ class wpGoogleAnalytics {
 
     public static $page_slug = 'wp-google-analytics';
 
-    // public $tokens = [];
+    //public $tokens = [];
 
     /**
      * This is our constructor, which is private to force the use of get_instance()
@@ -353,6 +353,7 @@ class wpGoogleAnalytics {
      *
      * @return string - Tracking URL
      */
+    /* REM
     private function _get_url( $track ) {
         $site_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
 
@@ -378,6 +379,7 @@ class wpGoogleAnalytics {
 
         return str_replace( "'", "\'", "/{$track['code']}/{$track['data']}{$char}referer=" . urlencode( isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '' ) );
     }
+    */
 
     /**
      * Maybe output or return, depending on the context
@@ -581,13 +583,16 @@ class wpGoogleAnalytics {
     /**
      * Callback for %the_category% token
      */
+    /* REM
     public function token_the_category() {
         return implode( ', ', wp_list_pluck( (array) get_the_category(), 'name' ) );
     }
+    */
 
     /**
      * Callback for %context% token
      */
+    /* REM
     public function token_context() {
         if ( is_admin() ) {
             return 'admin';
@@ -609,13 +614,16 @@ class wpGoogleAnalytics {
             return '404';
         }
     }
+    */
 
     /**
      * Callback for %the_tags% token
      */
+    /* REM
     public function token_the_tags() {
         return implode( ', ', wp_list_pluck( (array) get_the_tags(), 'name' ) );
     }
+    */
 
     public function add_plugin_page_links( $links, $file ) {
         if ( plugin_basename( __FILE__ ) == $file ) {
